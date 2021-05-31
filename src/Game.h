@@ -4,12 +4,12 @@
 #include <SDL2/SDL.h>
 
 class Game {
- private:
+private:
   bool isRunning;
-  SDL_Window* window;
-  SDL_Renderer* renderer;
+  SDL_Window *window;
+  SDL_Renderer *renderer;
 
- public:
+public:
   Game();
   ~Game();
   void Initialize();
@@ -18,6 +18,9 @@ class Game {
   void Update();
   void Render();
   void Destroy();
+
+  int windowWidth;
+  int windowHeight;
 };
 
 #endif
