@@ -1,6 +1,7 @@
 #include "Game.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <glm/glm.hpp>
 #include <iostream>
 
 Game::Game() {
@@ -42,8 +43,11 @@ void Game::Initialize() {
   isRunning = true;
 }
 
+glm::vec2 playerPosition;
+glm::vec2 playerVelocity;
 void Game::Setup() {
-  // setup the game
+  playerPosition = glm::vec2(10.0, 20.0);
+  playerVelocity = glm::vec2(1.0, 0.0);
 }
 
 void Game::Run() {
@@ -72,7 +76,10 @@ void Game::ProcessInput() {
   }
 }
 
-void Game::Update() {}
+void Game::Update() {
+  playerPosition.x += playerVelocity.x;
+  playerPosition.y += playerVelocity.y;
+}
 
 void Game::Destroy() {
   SDL_DestroyRenderer(renderer);
@@ -90,7 +97,9 @@ void Game::Render() {
   SDL_FreeSurface(surface);
 
   // what is the destination rectangle that we want to place our texture
-  SDL_Rect dstRect = {10, 10, 32, 32};
+  SDL_Rect dstRect = {static_cast<int>(playerPosition.x),
+                      static_cast<int>(playerPosition.y), 32, 32};
+
   // libsdl.org/sdl_rendercopy
   SDL_RenderCopy(renderer, texture, NULL, &dstRect);
   SDL_DestroyTexture(texture);
