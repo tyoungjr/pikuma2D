@@ -47,7 +47,7 @@ glm::vec2 playerPosition;
 glm::vec2 playerVelocity;
 void Game::Setup() {
   playerPosition = glm::vec2(10.0, 20.0);
-  playerVelocity = glm::vec2(1.0, 0.0);
+  playerVelocity = glm::vec2(100.0, 5.0);
 }
 
 void Game::Run() {
@@ -77,8 +77,23 @@ void Game::ProcessInput() {
 }
 
 void Game::Update() {
-  playerPosition.x += playerVelocity.x;
-  playerPosition.y += playerVelocity.y;
+  // if we are too fast , release execution until we reach the
+  // MILLISECS_PER_FRAME
+  int timeToWait =
+      MILLISECS_PER_FRAME - (SDL_GetTicks() - millisecsPreviousFrame);
+
+  if (timeToWait > 0 && timeToWait <= MILLISECS_PER_FRAME) {
+    SDL_Delay(timeToWait);
+  }
+
+  // the difference in ticks since the last frame, converted to seconds
+  double deltaTime = (SDL_GetTicks() - millisecsPreviousFrame) / 1000.0;
+
+  // store the "previous" frame time
+  millisecsPreviousFrame = SDL_GetTicks();
+
+  playerPosition.x += playerVelocity.x * deltaTime;
+  playerPosition.y += playerVelocity.y * deltaTime;
 }
 
 void Game::Destroy() {
