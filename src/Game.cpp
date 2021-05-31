@@ -1,7 +1,5 @@
 #include "Game.h"
-
 #include <SDL2/SDL.h>
-
 #include <iostream>
 
 Game::Game() {
@@ -44,6 +42,7 @@ void Game::Run() {
 }
 
 void Game::ProcessInput() {
+
   SDL_Event sdlEvent;
   while (SDL_PollEvent(&sdlEvent)) {
     switch (sdlEvent.type) {
@@ -67,4 +66,8 @@ void Game::Destroy() {
   SDL_Quit();
 }
 
-void Game::Render() {}
+void Game::Render() {
+  SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+  SDL_RenderClear(renderer);
+  SDL_RenderPresent(renderer);
+}
