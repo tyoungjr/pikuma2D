@@ -1,5 +1,7 @@
 #include "Game.h"
+
 #include <SDL2/SDL.h>
+
 #include <iostream>
 
 Game::Game() {
@@ -10,29 +12,26 @@ Game::Game() {
 Game::~Game() { std::cout << "Game destructor called" << std::endl; }
 
 void Game::Initialize() {
-  if(SDL_Init(SDL_INIT_EVERYTHING) != 0){
+  if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
     std::cerr << "Error initialializing SDL" << std::endl;
     return;
   }
 
-  SDL_Window* window = SDL_CreateWindow(
-    NULL,
-    SDL_WINDOWPOS_CENTERED, 
-    SDL_WINDOWPOS_CENTERED,
-    800,
-    600,
-    SDL_WINDOW_BORDERLESS); 
+  window =
+      SDL_CreateWindow(NULL, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                       800, 600, SDL_WINDOW_BORDERLESS);
 
   if (!window) {
     std::cerr << "Error creating SDL window " << std::endl;
     return;
   }
 
-  SDL_Renderer* renderer = SDL_CreateRenderer(window,-1,0 );// window pointer , display index and uflags
+  renderer = SDL_CreateRenderer(
+      window, -1, 0);  // window pointer , display index and uflags
   if (!renderer) {
-    std:cerr << "Error creating SDL Renderer" << std::endl; 
+    std::cerr << "Error creating SDL Renderer" << std::endl;
     return;
-  } 
+  }
 }
 
 void Game::Run() {
@@ -47,6 +46,10 @@ void Game::ProcessInput() {}
 
 void Game::Update() {}
 
-void Game::Destroy() {}
+void Game::Destroy() {
+  SDL_DestroyRenderer(renderer);
+  SDL_DestroyWindow(window);
+  SDL_Quit();
+}
 
 void Game::Render() {}
