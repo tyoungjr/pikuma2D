@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <iostream>
 
 Game::Game() {
@@ -17,8 +18,11 @@ void Game::Initialize() {
   // get the display mode from the system, setting it to full
   SDL_DisplayMode displayMode;
   SDL_GetCurrentDisplayMode(0, &displayMode);
-  windowWidth = displayMode.w;
-  windowHeight = displayMode.h;
+  // windowWidth = displayMode.w;
+  // windowHeight = displayMode.h;
+  // give fake fullscreen
+  windowWidth = 960;
+  windowHeight = 720;
   window =
       SDL_CreateWindow(NULL, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                        windowWidth, windowHeight, SDL_WINDOW_BORDERLESS);
@@ -38,7 +42,12 @@ void Game::Initialize() {
   isRunning = true;
 }
 
+void Game::Setup() {
+  // setup the game
+}
+
 void Game::Run() {
+  Setup();
   while (isRunning) {
     ProcessInput();
     Update();
@@ -72,7 +81,18 @@ void Game::Destroy() {
 }
 
 void Game::Render() {
-  SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+  SDL_SetRenderDrawColor(renderer, 21, 21, 21, 255);
   SDL_RenderClear(renderer);
+
+  // Draw a PNG texture
+  SDL_Surface *surface = IMG_Load("./assets/images/tank-tiger-right.png");
+  SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+  SDL_FreeSurface(surface);
+
+  // what is the destination rectangle that we want to place our texture
+  SDL_Rect dstRect = {10, 10, 32, 32};
+  // libsdl.org/sdl_rendercopy
+  SDL_RenderCopy(renderer, texture, NULL, &dstRect);
+  SDL_DestroyTexture(texture);
   SDL_RenderPresent(renderer);
 }
