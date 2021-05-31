@@ -15,7 +15,24 @@ void Game::Initialize() {
     return;
   }
 
-  SDL_Window* window = SDL_CreateWindow
+  SDL_Window* window = SDL_CreateWindow(
+    NULL,
+    SDL_WINDOWPOS_CENTERED, 
+    SDL_WINDOWPOS_CENTERED,
+    800,
+    600,
+    SDL_WINDOW_BORDERLESS); 
+
+  if (!window) {
+    std::cerr << "Error creating SDL window " << std::endl;
+    return;
+  }
+
+  SDL_Renderer* renderer = SDL_CreateRenderer(window,-1,0 );// window pointer , display index and uflags
+  if (!renderer) {
+    std:cerr << "Error creating SDL Renderer" << std::endl; 
+    return;
+  } 
 }
 
 void Game::Run() {
