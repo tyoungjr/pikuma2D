@@ -4,8 +4,10 @@
 #include <string>
 #include <vector>
 
+enum LogType { LOG_INFO, LOG_WARNING, LOG_ERROR };
+
 struct LogEntry {
-  int type;
+  LogType type;
   std::string message;
 };
 
