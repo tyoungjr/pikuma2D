@@ -1,16 +1,11 @@
-//#include "./Game/Game.h"
-#include <iostream>
-#include <SDL.h>
+#include "./Game/Game.h"
 
 int main(int argc, char *argv[]) {
+  
+    Game game;
+	game.Initialize();
+	game.Run();
+	game.Destroy();
 
-	
-	
-	/*Game game;
-
-  game.Initialize();
-  game.Run();
-  game.Destroy();*/
-
-  return 0;
+	return 0;
 }
