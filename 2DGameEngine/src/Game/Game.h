@@ -10,8 +10,8 @@ class Game {
 private:
   bool isRunning;
   int millisecsPreviousFrame = 0;
-  SDL_Window *window;
-  SDL_Renderer *renderer;
+  SDL_Window *window = nullptr;
+  SDL_Renderer *renderer = nullptr;
 
 public:
   Game();

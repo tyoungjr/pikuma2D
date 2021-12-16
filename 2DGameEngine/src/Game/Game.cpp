@@ -21,6 +21,8 @@ void Game::Initialize() {
 	// get the display mode from the system, setting it to full
 	SDL_DisplayMode displayMode;
 	SDL_GetCurrentDisplayMode(0, &displayMode);
+
+	// TODO Dynamic resolution based on display mode 
 	windowWidth = 960;
 	windowHeight = 720;
 	window = SDL_CreateWindow("Pikuma 2D Engine Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -31,13 +33,14 @@ void Game::Initialize() {
 		return;
 	}
 
-	// window pointer , display index and uflags
+	
 	renderer = SDL_CreateRenderer(window, -1, 0);
 	if (!renderer) {
 		Logger::Err("Error creating SDL Renderer");
 		return;
 	}
-
+	// If you want fake full screen
+	// SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN); 
 	isRunning = true;
 }
 
