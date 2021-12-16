@@ -1,8 +1,8 @@
 #include "Game.h"
 #include "../ECS/ECS.h"
 #include "../Logger/Logger.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include <SDL.h>
+#include <SDL_image.h>
 #include <glm/glm.hpp>
 #include <iostream>
 
@@ -15,20 +15,17 @@ Game::~Game() { Logger::Log("Game destructor called"); }
 
 void Game::Initialize() {
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-    Logger::Err("Error initialializing SDL");
+    Logger::Err("Error initializing SDL");
     return;
   }
   // get the display mode from the system, setting it to full
   SDL_DisplayMode displayMode;
   SDL_GetCurrentDisplayMode(0, &displayMode);
-  // windowWidth = displayMode.w;
-  // windowHeight = displayMode.h;
-  // give fake fullscreen
   windowWidth = 960;
   windowHeight = 720;
   window =
       SDL_CreateWindow(NULL, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                       windowWidth, windowHeight, SDL_WINDOW_BORDERLESS);
+                       windowWidth, windowHeight, 0);
 
   if (!window) {
     Logger::Err("Error creating SDL window.");
@@ -41,7 +38,7 @@ void Game::Initialize() {
     Logger::Err("Error creating SDL Renderer");
     return;
   }
-  SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+ /* SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);*/
   isRunning = true;
 }
 

@@ -1,8 +1,11 @@
+
 #include "Logger.h"
 #include <chrono>
 #include <ctime>
 #include <iostream>
 #include <string>
+
+
 
 std::vector<LogEntry> Logger::messages;
 // why C is important
@@ -10,6 +13,9 @@ std::string CurrentDateTimeToString() {
   std::time_t now =
       std::chrono::system_clock::to_time_t(std::chrono::system_clock ::now());
   std::string output(30, '\0');
+
+  // localtime is unsafe but idk what to change it to
+  // see https://docs.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-level-3-c4996?view=msvc-170`
   std::strftime(&output[0], output.size(), "%d-%b-%Y %H:%M:%S",
                 std::localtime(&now));
 
