@@ -12,8 +12,7 @@ std::string CurrentDateTimeToString() {
     std::chrono::system_clock::to_time_t(std::chrono::system_clock ::now());
     std::string output(30, '\0');
 
-    // TODO: localtime is unsafe but idk what to change it to
-    // see https://docs.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-level-3-c4996?view=msvc-170`
+    //localtime is unsafe in x64 builds 
     std::strftime(&output[0], output.size(), "%d-%b-%Y %H:%M:%S", std::localtime(&now));
 
     return output;
