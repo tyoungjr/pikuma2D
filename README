@@ -1,0 +1,11 @@
+run this command while in a dev environment 
+
+
+Building
+Dependencies 
+- meson 
+- python3 
+- MSVC 2019 or MSBuild tools.
+
+Inside an x64 Developer command prompt run:
+meson compile -C {build} 
