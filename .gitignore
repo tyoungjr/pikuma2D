@@ -33,6 +33,7 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+build/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -402,3 +403,7 @@ FodyWeavers.xsd
 # ignore sublime workspace files 
 *.sublime-workspace
 
+#meson subproject syntax 
+/subprojects/*
+
+!/subprojects/*.wrap
