@@ -1,9 +1,10 @@
-#include "include/Game/Game.h"
-#include "include/ECS/ECS.h"
-#include "include/Logger/Logger.h"
+#include <Game\Game.h>
+#include <ECS\ECS.h>
+#include <Logger\Logger.h>
+
 #include <SDL.h>
 #include <SDL_image.h>
-#include <glm/glm.hpp>
+#include <glm\glm.hpp>
 #include <iostream>
 
 Game::Game() {
