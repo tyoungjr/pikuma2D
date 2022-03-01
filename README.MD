@@ -1,6 +1,5 @@
 
-An implementation of the amazing 2D Game Engine Course by Gustavo Prezzi
-[https://pikuma.com/courses/cpp-2d-game-engine-development]
+An implementation of the amazing 2D Game Engine Course by Gustavo Prezzi[https://pikuma.com/courses/cpp-2d-game-engine-development]
 
 
 
