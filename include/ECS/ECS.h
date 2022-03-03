@@ -156,6 +156,7 @@ public:
 
 	// TODO:
 	//void KillEntity(Entity entity);
+	//void AddEntityToSystem(Entity entity);
 	
 	// System management
 	template <typename TSystem, typename ...TArgs> void AddSystem(TArgs&& ...args);
@@ -164,7 +165,7 @@ public:
 	template<typename TSystem> TSystem& GetSystem() const;
 
 	// Checks the component signature of an entity and add the entity to the systems 
-	// that are interested in it 
+	// that are interested in it
 	void AddEntityToSystems(Entity entity); 
 
 };
@@ -191,9 +192,9 @@ template<typename TSystem>
 bool Registry::HasSystem() const {
 	return systems.find(std::type_index(typeid(TSystem))) != systems.end(); 	
 }
-template<typename TSystem> onst {
-	auto system = systems.find(s
-TSystem& Registry::GetSystem() ctd::type_index(typeid(TSystem))); 
+template<typename TSystem> 
+TSystem& Registry::GetSystem()const {
+	auto system = systems.find(std::type_index(typeid(TSystem))); 
 	return std::static_pointer_cast<TSystem>(system->second);
 }
 
