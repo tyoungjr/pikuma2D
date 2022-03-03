@@ -1,7 +1,9 @@
-run this command while in a dev environment 
+
+An implementation of the amazing [2D Game Engine Course](https://pikuma.com/courses/cpp-2d-game-engine-development)
+by Gustavo Prezzi
 
 
-Building
+
 Dependencies 
 - meson 
 - python3 
