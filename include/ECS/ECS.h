@@ -53,6 +53,16 @@ public:
 	bool operator >(const Entity& other) const { return id > other.id; }
 	bool operator <(const Entity& other) const { return id < other.id; }
 
+	template <typename TComponent, typename ...TArgs> void AddComponent(TArgs&& ...args);
+	template <typename TComponent> void RemoveComponent();
+	template <typename TComponent> bool HasComponent() const; 
+	template <typename TComponent> TComponent& GetComponent() const;
+
+
+	// Hold a pointer to a pointer to the entity's owner registry
+	// should this be a shared ptr? 
+	class Registry* registry; 
+
 };
 
 /// <summary>
@@ -159,6 +169,7 @@ public:
 	template <typename TComponent, typename ...TArgs> void AddComponent(Entity entity, TArgs&& ...args);  
 	template <typename TComponent> void RemoveComponent(Entity entity); 
 	template <typename TComponent> bool HasComponent(Entity entity) const;
+	template <typename TComponent> TComponent& GetComponent(Entity entity) const; 
 
 	// TODO:
 	//void KillEntity(Entity entity);
@@ -251,4 +262,35 @@ bool Registry::HasComponent(Entity entity) const{
 
 	return entityComponentSignatures[entityId].test(componentId); 
 }
+
+
+template <typename TComponent>
+TComponent& Registry::GetComponent(Entity entity) const {
+	const auto componentId = Component<TComponent>::GetId(); 
+	const auto entityId = entity.GetId(); 
+	auto componentPool = std::static_pointer_cast<Pool<TComponent>>(componentPools[componentId]);
+	return componentPool->Get(entityId); 
+}
+
+// pass the calls directly to Registry parent class
+template <typename TComponent, typename ...TArgs>
+void Entity::AddComponent(TArgs&& ...args) {
+	registry->AddComponent<TComponent>(*this, std::forward<TArgs>(args)...);
+}
+
+template <typename TComponent>
+void Entity::RemoveComponent() {
+	registry->RemoveComponent<TComponent>(*this);
+}	
+
+template <typename TComponent>
+bool Entity::HasComponent() const {
+	return registry->HasComponent<TComponent>(*this);
+}	
+
+template <typename TComponent>
+TComponent& Entity::GetComponent() const {
+	return registry->GetComponent<TComponent>(*this);
+}
+
 #endif
