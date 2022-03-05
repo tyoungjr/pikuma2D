@@ -22,6 +22,7 @@ sol2_dep = declare_dependency(
 
 incdir = include_directories('include')
 src = ['src/Logger.cpp', 'src/Game.cpp', 'src/Main.cpp', 'src/ECS.cpp']
+
 deps = [sdl2_dep, glm_dep, sdl2_img_dep, imgui_dep, sol2_dep, sdl2_mix_dep,
         sdl2_ttf_dep]
 executable('pikuma2D',

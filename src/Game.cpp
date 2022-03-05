@@ -1,14 +1,18 @@
-#include <Game\Game.h>
-#include <ECS\ECS.h>
-#include <Logger\Logger.h>
-
 #include <SDL.h>
 #include <SDL_image.h>
-#include <glm\glm.hpp>
+#include <glm/glm.hpp>
 #include <iostream>
+#include <memory>
+
+#include "ECS/ECS.h"
+#include "Game/Game.h"
+#include "Logger/Logger.h"
+#include "Components/TransformComponent.h"
+#include "Components/RigidBodyComponent.h"
 
 Game::Game() {
 	isRunning = false;
+	registry = std::make_unique<Registry>(); 
 	Logger::Log("Game constructor called!");
 }
 
@@ -26,7 +30,9 @@ void Game::Initialize() {
 	// TODO Dynamic resolution based on display mode 
 	windowWidth = 960;
 	windowHeight = 720;
-	window = SDL_CreateWindow("Pikuma 2D Engine Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	window = SDL_CreateWindow("Pikuma 2D Engine Test",
+		SDL_WINDOWPOS_CENTERED, 
+		SDL_WINDOWPOS_CENTERED,
 		windowWidth, windowHeight, 0);
 
 	if (!window) {
@@ -46,11 +52,13 @@ void Game::Initialize() {
 }
 
 void Game::Setup() {
-	// TODO: 
-	// Entity tank = registry.CreateEntity();
-	// tank.AddComponent<TransformComponent>();
-	// tank.AddComponent<BoxColliderComponent>();
-	// tank.AddComonent<SpriteComonent>(".assets/images/tank.png");
+
+	Entity tank = registry->CreateEntity();
+
+	tank.AddComponent<TransformComponent>(glm::vec2(10.0, 30.0), glm::vec2(1.0, 1.0), 0.0); 
+	tank.AddComponent<RigidBodyComponent>(glm::vec2(50.0, 30.0)); 
+	
+	tank.RemoveComponent<TransformComponent>();
 }
 
 void Game::Run() {
