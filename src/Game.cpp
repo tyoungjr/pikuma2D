@@ -7,8 +7,10 @@
 #include "ECS/ECS.h"
 #include "Game/Game.h"
 #include "Logger/Logger.h"
+#include "Systems/MovementSystem.h"
 #include "Components/TransformComponent.h"
 #include "Components/RigidBodyComponent.h"
+#include "Systems/MovementSystem.h"
 
 Game::Game() {
 	isRunning = false;
@@ -53,12 +55,14 @@ void Game::Initialize() {
 
 void Game::Setup() {
 
+	registry->AddSystem<MovementSystem>();
+
 	Entity tank = registry->CreateEntity();
 
 	tank.AddComponent<TransformComponent>(glm::vec2(10.0, 30.0), glm::vec2(1.0, 1.0), 0.0); 
 	tank.AddComponent<RigidBodyComponent>(glm::vec2(50.0, 30.0)); 
 	
-	tank.RemoveComponent<TransformComponent>();
+
 }
 
 void Game::Run() {
@@ -90,8 +94,7 @@ void Game::ProcessInput() {
 void Game::Update() {
 	// if we are too fast , release execution until we reach the
 	// MILLISECS_PER_FRAME
-	int timeToWait =
-		MILLISECS_PER_FRAME - (SDL_GetTicks() - millisecsPreviousFrame);
+	int timeToWait = MILLISECS_PER_FRAME - (SDL_GetTicks() - millisecsPreviousFrame);
 
 	if (timeToWait > 0 && timeToWait <= MILLISECS_PER_FRAME) {
 		SDL_Delay(timeToWait);
@@ -103,10 +106,13 @@ void Game::Update() {
 	// store the "previous" frame time
 	millisecsPreviousFrame = SDL_GetTicks();
 
-	// TODO:
-	// MovementSystem.Update();
+	// 
+	registry->GetSystem<MovementSystem>().Update();
+	// registry->GetSystem<MovementSystem>().Update();
 	// CollisionSystem.Update();
 	// DamageSystem.Update();
+
+	registry->Update();
 }
 
 void Game::Destroy() {
