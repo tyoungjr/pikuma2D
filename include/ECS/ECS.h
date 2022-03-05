@@ -29,7 +29,7 @@ protected:
 // Used to assign unique ids to a component type 
 template <typename T>
 class Component: public IComponent {
-	
+public:
 	// Returns the unique id of the Component<T> 
   	static int GetId() {
   		static auto id = nextId++; 
@@ -100,7 +100,7 @@ public:
 
 	bool isEmpty() const  { return data.empty(); }
 
-	int GetSize() const { return data.size(); }
+	size_t GetSize() const { return data.size(); }
 
 	void Resize(int n) { data.resize(n); }
 
@@ -223,7 +223,7 @@ void Registry::AddComponent(Entity entity, TArgs && ...args) {
 
  	std::shared_ptr<Pool<TComponent>> componentPool = std::static_pointer_cast<Pool<TComponent>>(componentPools[componentId]);
 
-	if(entityId >= componentPool->GetSize()) {
+	if(entityId >= static_cast<int>(componentPool->GetSize())) {
 		componentPool->Resize(numEntities); 
 	} 
 
@@ -231,6 +231,8 @@ void Registry::AddComponent(Entity entity, TArgs && ...args) {
 	componentPool->Set(entityId, newComponent); 
 
 	entityComponentSignatures[entityId].set(componentId); 
+
+	Logger::Log("Component Id = " + std::to_string(componentId) + "was added to entity id " + std::to_string(entityId));
 }
 
 template <typename TComponent> 
