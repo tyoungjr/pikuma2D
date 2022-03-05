@@ -10,6 +10,8 @@
 #include <typeindex>
 #include <unordered_map>
 
+#include "Logger/Logger.h"
+
 const unsigned int MAX_COMPONENTS = 32;
 
 /// <summary>
@@ -128,7 +130,7 @@ private:
 	// Vector of component pools, contains all the data for a certain component type
 	// vector index = component type id 
 	// Pool index = entity id. 
-	std::vector<IPool*> componentPools;
+	std::vector<std::shared_ptr<IPool>> componentPools;
 
 	// set of Entities that are flagged to be added or removed in the next Update
 	std::set<Entity> entitiesToBeAdded;  
@@ -139,11 +141,15 @@ private:
 	std::vector<Signature> entityComponentSignatures;
 
 	// map of systems from their respective type_index
-	std::unordered_map<std::type_index, System*> systems; 
+	std::unordered_map<std::type_index, std::shared_ptr<System>> systems; 
 
 public:
-	Registry() = default; 
+	Registry() {Logger::Log("Registry constructor called");
+	} 
 
+	~Registry() {
+		Logger::Log("Registry destroyed");
+	}
 	void Update();
 	
 	// Entity management 
@@ -178,7 +184,7 @@ void System::RequireComponent() {
 
 template <typename TSystem, typename ...TArgs> 
 void Registry::AddSystem(TArgs&& ...args) {
-	TSystem* newSystem(new TSystem(std::forward<TArgs>(args)...)); 
+	std::shared_ptr<TSystem> newSystem = std::make_shared<TSystem>(std::forward<TArgs>(args)...); 
 	systems.insert(std::make_pair(std::type_index(typeid(TSystem)), newSystem));
 }
 
@@ -211,12 +217,11 @@ void Registry::AddComponent(Entity entity, TArgs && ...args) {
 
 	// if we don't have a component pool for this component. make it
 	if (!componentPools[componentId]) { 
-		Pool<TComponent>* newComponentPool = new Pool<TComponent>(); 
+		std::shared_ptr<Pool<TComponent>> newComponentPool = std::make_shared<Pool<TComponent>>(); 
 		componentPools[componentId] = newComponentPool;
 	}
 
-	// get the pool ofor 
-	Pool<TComponent>* componentPool = componentPools[componentId];
+ 	std::shared_ptr<Pool<TComponent>> componentPool = std::static_pointer_cast<Pool<TComponent>>(componentPools[componentId]);
 
 	if(entityId >= componentPool->GetSize()) {
 		componentPool->Resize(numEntities); 

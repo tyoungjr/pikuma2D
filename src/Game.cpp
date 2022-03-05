@@ -1,14 +1,15 @@
-#include <Game\Game.h>
-#include <ECS\ECS.h>
-#include <Logger\Logger.h>
-
 #include <SDL.h>
 #include <SDL_image.h>
-#include <glm\glm.hpp>
+#include <glm/glm.hpp>
 #include <iostream>
+
+#include "ECS/ECS.h"
+#include "Game/Game.h"
+#include "Logger/Logger.h"
 
 Game::Game() {
 	isRunning = false;
+	registry = new Registry();
 	Logger::Log("Game constructor called!");
 }
 
@@ -26,7 +27,9 @@ void Game::Initialize() {
 	// TODO Dynamic resolution based on display mode 
 	windowWidth = 960;
 	windowHeight = 720;
-	window = SDL_CreateWindow("Pikuma 2D Engine Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	window = SDL_CreateWindow("Pikuma 2D Engine Test",
+		SDL_WINDOWPOS_CENTERED, 
+		SDL_WINDOWPOS_CENTERED,
 		windowWidth, windowHeight, 0);
 
 	if (!window) {
@@ -46,11 +49,6 @@ void Game::Initialize() {
 }
 
 void Game::Setup() {
-	// TODO: 
-	// Entity tank = registry.CreateEntity();
-	// tank.AddComponent<TransformComponent>();
-	// tank.AddComponent<BoxColliderComponent>();
-	// tank.AddComonent<SpriteComonent>(".assets/images/tank.png");
 }
 
 void Game::Run() {

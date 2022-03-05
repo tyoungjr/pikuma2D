@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "ECS/ECS.h"
 #include "SDL.h"
 
 const int FPS = 60;
@@ -12,6 +13,8 @@ private:
   int millisecsPreviousFrame = 0;
   SDL_Window *window = nullptr;
   SDL_Renderer *renderer = nullptr;
+
+  Registry* registry; 
 
 public:
   Game();

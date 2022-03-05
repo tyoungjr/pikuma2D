@@ -1,5 +1,5 @@
-#include <ECS\ECS.h>
-#include <Logger\Logger.h>
+#include "ECS/ECS.h"
+#include "Logger/Logger.h"
 
 int IComponent::nextId = 0; 
 
