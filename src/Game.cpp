@@ -2,6 +2,7 @@
 #include <SDL_image.h>
 #include <glm/glm.hpp>
 #include <iostream>
+#include <memory>
 
 #include "ECS/ECS.h"
 #include "Game/Game.h"
@@ -9,7 +10,7 @@
 
 Game::Game() {
 	isRunning = false;
-	registry = new Registry();
+	registry = std::make_unique<Registry>(); 
 	Logger::Log("Game constructor called!");
 }
 
@@ -49,6 +50,7 @@ void Game::Initialize() {
 }
 
 void Game::Setup() {
+	Entity tank = registry->CreateEntity();
 }
 
 void Game::Run() {
