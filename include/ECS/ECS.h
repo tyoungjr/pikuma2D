@@ -210,9 +210,9 @@ bool Registry::HasSystem() const {
 	return systems.find(std::type_index(typeid(TSystem))) != systems.end(); 	
 }
 template<typename TSystem> 
-TSystem& Registry::GetSystem()const {
+TSystem& Registry::GetSystem() const {
 	auto system = systems.find(std::type_index(typeid(TSystem))); 
-	return std::static_pointer_cast<TSystem>(system->second);
+	return *(std::static_pointer_cast<TSystem>(system->second));
 }
 
 template <typename TComponent, typename ...TArgs>
