@@ -10,7 +10,9 @@
 #include "Systems/MovementSystem.h"
 #include "Components/TransformComponent.h"
 #include "Components/RigidBodyComponent.h"
+#include "Components/SpriteComponent.h"
 #include "Systems/MovementSystem.h"
+#include "Systems/RenderSystem.h"
 
 Game::Game() {
 	isRunning = false;
@@ -56,12 +58,20 @@ void Game::Initialize() {
 void Game::Setup() {
 
 	registry->AddSystem<MovementSystem>();
+	registry->AddSystem<RenderSystem>();
 
 	Entity tank = registry->CreateEntity();
 
 	tank.AddComponent<TransformComponent>(glm::vec2(10.0, 30.0), glm::vec2(1.0, 1.0), 0.0); 
-	tank.AddComponent<RigidBodyComponent>(glm::vec2(50.0, 30.0)); 
-	
+	tank.AddComponent<RigidBodyComponent>(glm::vec2(40.0, 0.0)); 
+	tank.AddComponent<SpriteComponent>(10, 10);
+
+	Entity truck = registry->CreateEntity();
+
+	truck.AddComponent<TransformComponent>(glm::vec2(50.0, 100.0), glm::vec2(1.0, 1.0), 0.0); 
+	truck.AddComponent<RigidBodyComponent>(glm::vec2(0.0, 50.0)); 
+	truck.AddComponent<SpriteComponent>(10, 50);
+
 
 }
 
@@ -106,13 +116,14 @@ void Game::Update() {
 	// store the "previous" frame time
 	millisecsPreviousFrame = SDL_GetTicks();
 
-	// 
-	registry->GetSystem<MovementSystem>().Update();
+	registry->Update();
+
+	registry->GetSystem<MovementSystem>().Update(deltaTime);
 	// registry->GetSystem<MovementSystem>().Update();
 	// CollisionSystem.Update();
 	// DamageSystem.Update();
 
-	registry->Update();
+
 }
 
 void Game::Destroy() {
@@ -126,6 +137,7 @@ void Game::Render() {
 	SDL_RenderClear(renderer);
 
 	// TODO: Render game object
+	registry->GetSystem<RenderSystem>().Update(renderer); 
 
 	SDL_RenderPresent(renderer);
 }
